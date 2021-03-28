@@ -1,0 +1,27 @@
+#anchor,#tabPane{
+    -fx-background-color:linear-gradient(to bottom,#7733ff,#bf80ff);
+}
+#LoginButton{
+    -fx-background-color:#f2e6ff;
+}
+#listaParticipanti,#listaProbe
+{
+    -fx-background-color:#f2e6ff;
+    -fx-font-family: Georgia;
+    -fx-font-weight: bold;
+}
+
+.text-field,password-field{
+    -fx-background-color:#f2e6ff;
+}
+.label{
+    -fx-font-family: Georgia;
+    -fx-font-weight: bold;
+}
+
+.button{
+    -fx-font-family: Georgia;
+    -fx-font-weight: bold;
+    -fx-border-radius: 12px;
+}
+

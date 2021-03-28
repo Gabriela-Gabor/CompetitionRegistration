@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anchor" prefHeight="366.0" prefWidth="600.0" stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.UtilizatorController">
+   <children>
+      <Button fx:id="inscriereButton" layoutX="378.0" layoutY="247.0" mnemonicParsing="false" onAction="#inscriere" prefHeight="31.0" prefWidth="120.0" text="INSCRIERE" />
+      <ListView fx:id="listaProbe" layoutX="21.0" layoutY="44.0" prefHeight="237.0" prefWidth="266.0" />
+      <TextField fx:id="numeTextField" layoutX="429.0" layoutY="48.0" prefHeight="31.0" prefWidth="157.0" />
+      <Label layoutX="349.0" layoutY="193.0" text="Proba 2" />
+      <Label layoutX="355.0" layoutY="54.0" text="Nume" />
+      <Label layoutX="350.0" layoutY="146.0" text="Proba 1" />
+      <TextField fx:id="proba1TextField" layoutX="429.0" layoutY="140.0" prefHeight="31.0" prefWidth="157.0" />
+      <TextField fx:id="proba2TextField" layoutX="429.0" layoutY="187.0" prefHeight="31.0" prefWidth="157.0" />
+      <Button fx:id="LogoutButton" layoutX="566.0" layoutY="307.0" mnemonicParsing="false" onAction="#LogoutButton" opacity="0.0" prefHeight="3.0" prefWidth="20.0" />
+      <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="561.0" layoutY="307.0">
+         <image>
+            <Image url="logout.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="SearchButton" layoutX="21.0" layoutY="307.0" mnemonicParsing="false" onAction="#SearchButton" opacity="0.0" prefHeight="29.0" prefWidth="30.0" />
+      <ImageView fitHeight="29.0" fitWidth="30.0" layoutX="21.0" layoutY="307.0">
+         <image>
+            <Image url="search.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="353.0" layoutY="100.0" text="Varsta" />
+      <TextField fx:id="varstaTextField" layoutX="429.0" layoutY="94.0" prefHeight="31.0" prefWidth="157.0" />
+   </children>
+</AnchorPane>
