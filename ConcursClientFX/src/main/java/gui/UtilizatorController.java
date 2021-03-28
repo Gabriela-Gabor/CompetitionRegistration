@@ -1,5 +1,6 @@
 package gui;
 
+import concurs.model.Inregistrare;
 import concurs.model.Utilizator;
 import concurs.services.ConcursException;
 import concurs.services.IConcursObserver;
@@ -126,9 +127,9 @@ public class UtilizatorController implements Initializable, IConcursObserver {
         }
     }
 
-        @FXML
-        public void inscriere () {
-        /*String nume = numeTextField.getText();
+    @FXML
+    public void inscriere() {
+        String nume = numeTextField.getText();
         int varsta;
         try {
             varsta = Integer.parseInt(varstaTextField.getText());
@@ -140,27 +141,40 @@ public class UtilizatorController implements Initializable, IConcursObserver {
             } else if (proba1 == "" && proba2 == "") {
                 MessageAlert.showWarningMessage(null, "Trebuie sa introduceti macar o proba");
             } else {
-                server.salveazaCopil(nume, varsta);
-                if (nume != "" && !proba1.equals("")) {
-                    if (!server.inregistreaza(nume, varsta, proba1))
-                        MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
-                    else
-                        clear();
+                try {
+                    server.salveazaCopil(nume, varsta);
+                    if (nume != "" && !proba1.equals("")) {
+                        try {
+                            server.inregistreaza(nume, varsta, proba1);
+                            clear();
+                        } catch (ConcursException e) {
+                            MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
+                        }
+
+                    }
+                    if (nume != "" && !proba2.equals("")) {
+                        try {
+                            server.inregistreaza(nume, varsta, proba2);
+                            clear();
+                        } catch (ConcursException e) {
+                            MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
+                        }
+                    }
+                    modelProbe.setAll(server.findProbeParticipanti());
+
+                } catch (ConcursException e) {
 
                 }
-                if (nume != "" && !proba2.equals("")) {
-                    if (!server.inregistreaza(nume, varsta, proba2))
-                        MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
-                    else
-                        clear();
-                }
-                modelProbe.setAll(server.findProbeParticipanti());
             }
         } catch (NumberFormatException e) {
             MessageAlert.showWarningMessage(null, "Varsta trebuie sa fie un nr intreg!");
         }
-        */
-        }
 
     }
+
+    public void participantSalvat(Inregistrare inregistrare)throws ConcursException{
+        modelProbe.setAll(server.findProbeParticipanti());
+    }
+
+}
 

@@ -14,7 +14,7 @@ public interface IConcursService {
 
     void logout(Utilizator u,IConcursObserver client) throws ConcursException ;
 
-    void salveazaCopil(String nume, int varsta);
+    void salveazaCopil(String nume, int varsta) throws ConcursException;
 
     void inregistreaza(String nume, int varsta, String proba) throws ConcursException;
 

@@ -1,5 +1,5 @@
 package concurs.network.rpcprotocol;
 
 public enum ResponseType {
-    OK,ERROR,GET_PROBE,GET_COPII;
+    OK,ERROR,GET_PROBE,GET_COPII,PARTICIPANT_NOU;
 }

@@ -1,7 +1,9 @@
 package concurs.network.rpcprotocol;
 
 import concurs.model.Copil;
+import concurs.model.Inregistrare;
 import concurs.model.Utilizator;
+import concurs.network.dto.InregistrareDTO;
 import concurs.network.utils.ServerException;
 import concurs.services.ConcursException;
 import concurs.services.IConcursObserver;
@@ -100,7 +102,7 @@ public class ConcursClientRpcWorker implements Runnable, IConcursObserver {
             }
 
         }
-        if (request.type() == RequestType.GET_COPII)
+        if (request.type() == RequestType.GET_COPII) {
             try {
                 String s = (String) request.data();
                 String[] fields = s.split("-");
@@ -109,6 +111,28 @@ public class ConcursClientRpcWorker implements Runnable, IConcursObserver {
             } catch (ConcursException e) {
                 return errorResponse;
             }
+        }
+        if(request.type()==RequestType.SAVE_COPIL){
+            Copil copil=(Copil)request.data();
+            try{
+                server.salveazaCopil(copil.getNume(),copil.getVarsta());
+                return okResponse;
+            }catch (ConcursException e){
+                return errorResponse;
+            }
+
+        }
+        if(request.type()==RequestType.SAVE_INREGISTRARE){
+           InregistrareDTO inregistrareDTO=(InregistrareDTO) request.data();
+            try{
+                server.inregistreaza(inregistrareDTO.getNume(),inregistrareDTO.getVarsta(),inregistrareDTO.getDenumire());
+                return okResponse;
+            }catch (ConcursException e){
+                return errorResponse;
+            }
+
+        }
+
         return response;
     }
 
@@ -116,5 +140,15 @@ public class ConcursClientRpcWorker implements Runnable, IConcursObserver {
         output.writeObject(response);
         output.flush();
     }
+
+    public void participantSalvat(Inregistrare inregistrare) throws ConcursException{
+        Response resp=new Response.Builder().type(ResponseType.PARTICIPANT_NOU).data(inregistrare).build();
+        try {
+            sendResponse(resp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 

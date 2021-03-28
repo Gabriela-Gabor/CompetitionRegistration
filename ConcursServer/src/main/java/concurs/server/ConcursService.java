@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ConcursService implements IConcursService {
 
@@ -53,7 +55,7 @@ public class ConcursService implements IConcursService {
 
     }
 
-    public void salveazaCopil(String nume,int varsta)
+    public void salveazaCopil(String nume,int varsta)  throws ConcursException
     {
         Copil copil=new Copil(nume,varsta);
         repoCopii.save(copil);
@@ -68,6 +70,7 @@ public class ConcursService implements IConcursService {
             if (nrInregistrari < 2) {
                 Inregistrare inregistrare = new Inregistrare(c, p);
                 repoInregistrari.save(inregistrare);
+                //notifyNewParticipanti(inregistrare);
 
             }
             else throw new ConcursException("Este inscris la doua probe!");
@@ -99,5 +102,26 @@ public class ConcursService implements IConcursService {
             list.add(p+"  -  "+nrParticipanti+" participanti");
         }
         return list;
+    }
+
+    private final int defaultThreadsNo=5;
+
+    private void notifyNewParticipanti(Inregistrare inregistrare) throws ConcursException {
+        Iterable<Utilizator> utilizatori=repoUtilizatori.findAll();
+
+        ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
+        for(Utilizator u:utilizatori){
+            IConcursObserver client=loggedUsers.get(u.getId());
+            if (client!=null)
+                executor.execute(() -> {
+                    try {
+                        client.participantSalvat(inregistrare);
+                    } catch (ConcursException e) {
+                        System.err.println("Error notifying friend " + e);
+                    }
+                });
+        }
+
+        executor.shutdown();
     }
 }

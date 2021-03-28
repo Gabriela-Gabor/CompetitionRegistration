@@ -1,8 +1,10 @@
 package concurs.network.rpcprotocol;
 
 import concurs.model.Copil;
+import concurs.model.Inregistrare;
 import concurs.model.Proba;
 import concurs.model.Utilizator;
+import concurs.network.dto.InregistrareDTO;
 import concurs.services.ConcursException;
 import concurs.services.IConcursObserver;
 import concurs.services.IConcursService;
@@ -95,10 +97,14 @@ public class ConcursServicesRpcProxy implements IConcursService {
                 try {
                     Object response = input.readObject();
                     System.out.println("response received " + response);
-                    try {
-                        qresponses.put((Response) response);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    if (((Response) response).type() == ResponseType.PARTICIPANT_NOU) {
+                        handleUpdate((Response) response);
+                    } else {
+                        try {
+                            qresponses.put((Response) response);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } catch (IOException e) {
                     System.out.println("Reading error " + e);
@@ -128,26 +134,42 @@ public class ConcursServicesRpcProxy implements IConcursService {
     public void logout(Utilizator user, IConcursObserver client) throws ConcursException {
         Request req = new Request.Builder().type(RequestType.LOGOUT).data(user).build();
         sendRequest(req);
-        Response response=readResponse();
+        Response response = readResponse();
         closeConnection();
-        if (response.type()== ResponseType.ERROR){
+        if (response.type() == ResponseType.ERROR) {
             throw new ConcursException("Error");
         }
     }
 
     @Override
-    public void salveazaCopil(String nume, int varsta) {
+    public void salveazaCopil(String nume, int varsta) throws ConcursException {
+
+        Copil copil = new Copil(nume, varsta);
+        Request req = new Request.Builder().type(RequestType.SAVE_COPIL).data(copil).build();
+        sendRequest(req);
+        Response response = readResponse();
+        if (response.type() == ResponseType.ERROR) {
+            throw new ConcursException("Error");
+        }
 
     }
 
     @Override
     public void inregistreaza(String nume, int varsta, String proba) throws ConcursException {
+        InregistrareDTO inregistrareDTO = new InregistrareDTO(nume, varsta, proba);
+        Request req = new Request.Builder().type(RequestType.SAVE_INREGISTRARE).data(inregistrareDTO).build();
+        sendRequest(req);
+        Response response = readResponse();
+        if (response.type() == ResponseType.ERROR) {
+            throw new ConcursException("Error");
+        }
 
     }
 
+
     @Override
-    public List<Copil> cauta(String proba, int varsta) throws ConcursException{
-        String s=proba+"-"+varsta;
+    public List<Copil> cauta(String proba, int varsta) throws ConcursException {
+        String s = proba + "-" + varsta;
         Request req = new Request.Builder().type(RequestType.GET_COPII).data(s).build();
         sendRequest(req);
         Response response = readResponse();
@@ -173,6 +195,18 @@ public class ConcursServicesRpcProxy implements IConcursService {
         }
         List<String> probe = (List<String>) response.data();
         return probe;
+    }
+
+    private void handleUpdate(Response response) {
+        if ((response.type() == ResponseType.PARTICIPANT_NOU)) {
+
+            Inregistrare inregistrare = (Inregistrare) response.data();
+            try {
+                client.participantSalvat(inregistrare);
+            } catch (ConcursException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
 
