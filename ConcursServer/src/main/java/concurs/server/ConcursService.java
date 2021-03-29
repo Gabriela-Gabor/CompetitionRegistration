@@ -70,7 +70,7 @@ public class ConcursService implements IConcursService {
             if (nrInregistrari < 2) {
                 Inregistrare inregistrare = new Inregistrare(c, p);
                 repoInregistrari.save(inregistrare);
-                //notifyNewParticipanti(inregistrare);
+                notifyNewParticipanti(inregistrare);
 
             }
             else throw new ConcursException("Este inscris la doua probe!");
@@ -115,7 +115,7 @@ public class ConcursService implements IConcursService {
             if (client!=null)
                 executor.execute(() -> {
                     try {
-                        client.participantSalvat(inregistrare);
+                        client.participantSalvat(inregistrare.getProba().getId());
                     } catch (ConcursException e) {
                         System.err.println("Error notifying friend " + e);
                     }

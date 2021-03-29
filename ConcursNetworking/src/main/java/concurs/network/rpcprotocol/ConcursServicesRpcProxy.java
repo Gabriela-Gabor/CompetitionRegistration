@@ -200,9 +200,9 @@ public class ConcursServicesRpcProxy implements IConcursService {
     private void handleUpdate(Response response) {
         if ((response.type() == ResponseType.PARTICIPANT_NOU)) {
 
-            Inregistrare inregistrare = (Inregistrare) response.data();
+            int idProba = (Integer)response.data();
             try {
-                client.participantSalvat(inregistrare);
+                client.participantSalvat(idProba);
             } catch (ConcursException e) {
                 e.printStackTrace();
             }

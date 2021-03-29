@@ -141,8 +141,8 @@ public class ConcursClientRpcWorker implements Runnable, IConcursObserver {
         output.flush();
     }
 
-    public void participantSalvat(Inregistrare inregistrare) throws ConcursException{
-        Response resp=new Response.Builder().type(ResponseType.PARTICIPANT_NOU).data(inregistrare).build();
+    public void participantSalvat(int idProba) throws ConcursException{
+        Response resp=new Response.Builder().type(ResponseType.PARTICIPANT_NOU).data(idProba).build();
         try {
             sendResponse(resp);
         } catch (IOException e) {

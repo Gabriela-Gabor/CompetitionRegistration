@@ -5,6 +5,7 @@ import concurs.model.Utilizator;
 import concurs.services.ConcursException;
 import concurs.services.IConcursObserver;
 import concurs.services.IConcursService;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -160,10 +161,10 @@ public class UtilizatorController implements Initializable, IConcursObserver {
                             MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
                         }
                     }
-                    modelProbe.setAll(server.findProbeParticipanti());
+                    //modelProbe.setAll(server.findProbeParticipanti());
 
                 } catch (ConcursException e) {
-
+                    MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
                 }
             }
         } catch (NumberFormatException e) {
@@ -172,8 +173,15 @@ public class UtilizatorController implements Initializable, IConcursObserver {
 
     }
 
-    public void participantSalvat(Inregistrare inregistrare)throws ConcursException{
-        modelProbe.setAll(server.findProbeParticipanti());
+    public void participantSalvat(int idProba)throws ConcursException{
+        Platform.runLater(()->{try {
+            modelProbe.setAll(server.findProbeParticipanti());
+        }catch(ConcursException e)
+        {
+            MessageAlert.showWarningMessage(null, "Nu s-a putut actualiza lista de probe cu participanti!");
+        };
+        });
+
     }
 
 }
