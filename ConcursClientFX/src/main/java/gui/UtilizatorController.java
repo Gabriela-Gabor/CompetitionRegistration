@@ -161,7 +161,7 @@ public class UtilizatorController implements Initializable, IConcursObserver {
                             MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");
                         }
                     }
-                    //modelProbe.setAll(server.findProbeParticipanti());
+
 
                 } catch (ConcursException e) {
                     MessageAlert.showWarningMessage(null, "Inregistrarea a esuat!");

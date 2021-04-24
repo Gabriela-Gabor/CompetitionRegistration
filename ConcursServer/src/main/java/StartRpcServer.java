@@ -1,3 +1,4 @@
+import concurs.model.Utilizator;
 import concurs.network.utils.AbsConcurrentServer;
 import concurs.network.utils.AbstractServer;
 import concurs.network.utils.ConcursRpcConcurrentServer;
@@ -6,14 +7,12 @@ import concurs.persistence.ICopiiRepository;
 import concurs.persistence.IInregistrariRepository;
 import concurs.persistence.IProbeRepository;
 import concurs.persistence.IUtilizatoriRepository;
-import concurs.persistence.repository.CopiiRepository;
-import concurs.persistence.repository.InregistrariRepository;
-import concurs.persistence.repository.ProbeRepository;
-import concurs.persistence.repository.UtilizatoriRepository;
+import concurs.persistence.repository.*;
 import concurs.server.ConcursService;
 import concurs.services.IConcursService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 public class StartRpcServer {
@@ -31,7 +30,7 @@ public class StartRpcServer {
             System.err.println("Cannot find concursserver.properties " + e);
             return;
         }
-        IUtilizatoriRepository repoUtilizatori = new UtilizatoriRepository(serverProps);
+        IUtilizatoriRepository repoUtilizatori = new UtilizatoriORMRepository(serverProps);
         ICopiiRepository repoCopii = new CopiiRepository(serverProps);
         IProbeRepository repoProbe = new ProbeRepository(serverProps);
         IInregistrariRepository repoInregistrari = new InregistrariRepository(serverProps, repoCopii, repoProbe);

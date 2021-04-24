@@ -111,7 +111,7 @@ public class ConcursService implements IConcursService {
 
         ExecutorService executor= Executors.newFixedThreadPool(defaultThreadsNo);
         for(Utilizator u:utilizatori){
-            IConcursObserver client=loggedUsers.get(u.getId());
+            IConcursObserver client=loggedUsers.get(u.getNumeUtilizator());
             if (client!=null)
                 executor.execute(() -> {
                     try {
